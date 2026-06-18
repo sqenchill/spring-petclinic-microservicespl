@@ -1,0 +1,16 @@
+services:
+  api-gateway:
+    environment:
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tracing-server:9411/api/v2/spans
+  customers-service:
+    environment:
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tracing-server:9411/api/v2/spans
+  vets-service:
+    environment:
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tracing-server:9411/api/v2/spans
+  visits-service:
+    environment:
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tracing-server:9411/api/v2/spans
+  admin-server:
+    environment:
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tracing-server:9411/api/v2/spans
