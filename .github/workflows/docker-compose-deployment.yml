@@ -1,0 +1,67 @@
+name: Local Deployment — Docker Compose
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: Run Spring PetClinic with Docker Compose
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Start all services
+        env:
+          OPENAI_API_KEY: demo
+          AZURE_OPENAI_KEY: ""
+          AZURE_OPENAI_ENDPOINT: ""
+        run: docker compose up -d
+
+      - name: Wait for config-server and discovery-server
+        run: |
+          echo "Waiting for config-server (:8888)..."
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8888 && break
+            echo "  attempt $i/30 — retrying in 10s"
+            sleep 10
+          done
+
+          echo "Waiting for discovery-server (:8761)..."
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8761 && break
+            echo "  attempt $i/30 — retrying in 10s"
+            sleep 10
+          done
+
+      - name: Wait for application services
+        run: |
+          for port in 8080 8081 8082 8083 9090; do
+            echo "Waiting for port $port..."
+            for i in $(seq 1 20); do
+              curl -sf http://localhost:$port && break
+              echo "  attempt $i/20 — retrying in 10s"
+              sleep 10
+            done
+          done
+
+      - name: Verify monitoring services
+        run: |
+          curl -sf http://localhost:9411 && echo "Zipkin (:9411) OK"
+          curl -sf http://localhost:9091 && echo "Prometheus (:9091) OK"
+          curl -sf http://localhost:3030 && echo "Grafana (:3030) OK"
+
+      - name: Show running containers
+        run: docker compose ps
+
+      - name: Show container logs on failure
+        if: failure()
+        run: docker compose logs
+
+      - name: Tear down
+        if: always()
+        run: docker compose down
