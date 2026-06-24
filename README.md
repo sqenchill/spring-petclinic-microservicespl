@@ -1,9 +1,15 @@
 # Spring PetClinic Microservices — Local Deployment
 
-**DevOps Micro-Internship Final Project — Local Deployment Fork**
+**DevOps Micro-Internship Final Project — Personal Local Deployment**
 **Deployed by:** Sonny Enchill | **Date:** 17 June 2026
 
-This repository is a fork of the Spring PetClinic Microservices application used to demonstrate a complete local deployment using Docker Compose. It covers the full process: cloning the repo, pulling and starting all containers, verifying every service is running, testing the application, and confirming monitoring is live.
+This repository documents two separate pieces of work:
+
+- **May 2026 — Group deployment (EKS):** The team of 10 deployed the Spring PetClinic application to Amazon EKS using Terraform, GitHub Actions CI/CD, Amazon ECR, and an ALB ingress. That work lives in the team organisation at [spring-pet-clinic/spring-pet-clinic-deployment](https://github.com/spring-pet-clinic/spring-pet-clinic-deployment).
+
+- **June 2026 — Personal local deployment (Docker Compose):** This repo. After the group sprint, this is an individual demonstration of the same application running end-to-end on a local machine using Docker Compose and Docker Desktop — no cloud infrastructure required.
+
+This walkthrough covers the full local deployment process: cloning the repo, pulling and starting all 11 containers, verifying every service endpoint, testing the application, and confirming monitoring is live with real data.
 
 ---
 
